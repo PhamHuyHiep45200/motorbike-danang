@@ -6,14 +6,22 @@ import { Drawer } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
+import ModalCheckLogin from "./ModalCheckLogin";
 
 function Header() {
   const {user,setLoading} = useContext(CreateContext);
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
+  const [openCheckLogin, setOpenCheckLogin] = useState(false);
+  const closeModal = ()=>{
+    setOpenCheckLogin(false)
+  }
   const showDrawer = () => {
-    setOpen(true);
+    if(localStorage.getItem('userId')){
+      setOpen(true);
+    }else{
+      setOpenCheckLogin(true)
+    }
   };
 
   const onClose = () => {
@@ -64,6 +72,7 @@ function Header() {
           </span>
         </div>
       </Drawer>
+      <ModalCheckLogin open={openCheckLogin} closeModal={closeModal}/>
     </div>
   );
 }
