@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 
 function Header() {
-  const {user} = useContext(CreateContext);
+  const {user,setLoading} = useContext(CreateContext);
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -23,6 +23,7 @@ function Header() {
     if(path==='/auth/login'){
       localStorage.clear()
     }
+    setLoading(true)
     router.push(path);
     onClose();
   };

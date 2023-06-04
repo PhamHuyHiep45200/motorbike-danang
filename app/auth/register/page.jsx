@@ -1,12 +1,15 @@
 "use client";
+import { CreateContext } from "@/context/ContextProviderGlobal";
 import { createUser } from "@/service/user";
 import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
 
 function Login() {
+  const {setLoading} = useContext(CreateContext);
   const router = useRouter();
   const redirectLogin = () => {
+    setLoading(true)
     router.push("/auth/login");
   };
   const createAccount = async (e)=>{
@@ -15,6 +18,7 @@ function Login() {
       const response = await createUser(data)
       if(response.data && response.data.status===200){
         alert('create account suscess')
+        setLoading(true)
         router.push('/auth/login')
       }else{
         console.log('error')

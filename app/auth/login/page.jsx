@@ -1,13 +1,16 @@
 "use client";
+import { CreateContext } from "@/context/ContextProviderGlobal";
 import { loginUser } from "@/service/user";
 import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
 
 function Login() {
+  const {setLoading} = useContext(CreateContext);
   const router = useRouter();
   const redirectRegister = (path) => {
     router.push("/auth/register");
+    setLoading(true)
   };
   const submit = async (e)=>{
     try {
@@ -17,6 +20,7 @@ function Login() {
           localStorage.removeItem('userId')
         }
         await localStorage.setItem('userId', response.data.data.id)
+        setLoading(true)
         router.push('/')
       }else{
         console.log(response)
