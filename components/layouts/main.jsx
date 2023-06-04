@@ -20,7 +20,7 @@ function MainLayout({ children }) {
     } else {
       setUser(null);
     }
-  }, [localStorage.getItem("userId")]);
+  }, []);
 
   useEffect(() => {
     const url = pathname + searchParams.toString();
