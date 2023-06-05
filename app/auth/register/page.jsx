@@ -6,37 +6,49 @@ import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 
 function Login() {
-  const {setLoading, errorNoti, successNoti} = useContext(CreateContext);
+  const { setLoading, errorNoti, successNoti } = useContext(CreateContext);
   const router = useRouter();
   const redirectLogin = () => {
-    setLoading(true)
+    setLoading(true);
     router.push("/auth/login");
   };
-  const createAccount = async (e)=>{
-    const {confirm,...data}=e
+  const createAccount = async (e) => {
+    const { confirm, ...data } = e;
     try {
-      const response = await createUser(data)
-      if(response.data && response.data.status===200){
-        successNoti('Tạo tài khoản thành công')
-        setLoading(true)
-        router.push('/auth/login')
-      }else{
-        errorNoti(response.data.message)
+      const response = await createUser(data);
+      if (response.data && response.data.status === 200) {
+        successNoti("Tạo tài khoản thành công");
+        setLoading(true);
+        router.push("/auth/login");
+      } else {
+        errorNoti(response.data.message);
       }
     } catch (error) {
-      errorNoti(error)
+      errorNoti(error);
     }
-  }
+  };
   return (
     <div>
       <Form onFinish={createAccount}>
-        <Form.Item name="name">
+        <Form.Item
+          name="name"
+          rules={[{ required: true, message: "Không được bỏ trống!" }]}
+        >
           <Input size="large" placeholder="Tên" />
         </Form.Item>
-        <Form.Item name="email">
+        <Form.Item
+          name="email"
+          rules={[
+            { required: true, message: "Không được bỏ trống!" },
+            { type: "email", message: "Bắt buộc email" },
+          ]}
+        >
           <Input size="large" placeholder="Email" />
         </Form.Item>
-        <Form.Item name="phone">
+        <Form.Item
+          name="phone"
+          rules={[{ required: true, message: "Không được bỏ trống!" }]}
+        >
           <Input size="large" placeholder="Số điện thoại" />
         </Form.Item>
         <Form.Item
@@ -79,7 +91,11 @@ function Login() {
         >
           Đăng nhập
         </span>
-        <Button className="w-full !bg-primary !text-[white] !mt-5" size="large" htmlType="submit">
+        <Button
+          className="w-full !bg-primary !text-[white] !mt-5"
+          size="large"
+          htmlType="submit"
+        >
           Đăng kí
         </Button>
       </Form>

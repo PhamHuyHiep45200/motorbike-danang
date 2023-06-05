@@ -31,13 +31,28 @@ function AccountEdit({ editForm }) {
   return (
     <div>
       <Form form={form} onFinish={editInfo}>
-        <Form.Item name="name" label="Họ Và Tên">
+        <Form.Item
+          name="name"
+          label="Họ Và Tên"
+          rules={[{ required: true, message: "Không được bỏ trống!" }]}
+        >
           <Input size="large" />
         </Form.Item>
-        <Form.Item name="email" label="Email">
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { required: true, message: "Không được bỏ trống!" },
+            { type: "email", message: "Bắt buộc email" },
+          ]}
+        >
           <Input size="large" />
         </Form.Item>
-        <Form.Item name="phone" label="Số Điện Thoại">
+        <Form.Item
+          name="phone"
+          label="Số Điện Thoại"
+          rules={[{ required: true, message: "Không được bỏ trống!" }]}
+        >
           <Input size="large" />
         </Form.Item>
         <div className="flex items-center space-x-[10px] mt-10">

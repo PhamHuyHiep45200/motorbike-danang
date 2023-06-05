@@ -6,37 +6,46 @@ import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 
 function Login() {
-  const {setLoading, errorNoti} = useContext(CreateContext);
+  const { setLoading, errorNoti } = useContext(CreateContext);
   const router = useRouter();
   const redirectRegister = (path) => {
     router.push("/auth/register");
-    setLoading(true)
+    setLoading(true);
   };
-  const submit = async (e)=>{
+  const submit = async (e) => {
     try {
-      const response = await loginUser(e)
-      if(response.data && response.data.status===200){
-        if(localStorage.getItem('userId')){
-          localStorage.removeItem('userId')
+      const response = await loginUser(e);
+      if (response.data && response.data.status === 200) {
+        if (localStorage.getItem("userId")) {
+          localStorage.removeItem("userId");
         }
-        await localStorage.setItem('userId', response.data.data.id)
-        setLoading(true)
-        router.push('/')
-      }else{
-        errorNoti(response.data.message)
+        await localStorage.setItem("userId", response.data.data.id);
+        setLoading(true);
+        router.push("/");
+      } else {
+        errorNoti(response.data.message);
       }
     } catch (error) {
-      errorNoti(error)
+      errorNoti(error);
     }
-  }
+  };
   return (
     <div>
       <Form onFinish={submit}>
-        <Form.Item name="email">
+        <Form.Item
+          name="email"
+          rules={[
+            { required: true, message: "Không được bỏ trống!" },
+            { type: "email", message: "Bắt buộc email" },
+          ]}
+        >
           <Input size="large" placeholder="Email" />
         </Form.Item>
-        <Form.Item name="password">
-          <Input size="large" placeholder="Mật khẩu" />
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: "Không được bỏ trống!" }]}
+        >
+          <Input.Password size="large" placeholder="Mật khẩu" />
         </Form.Item>
         <span
           className="block text-right text-[white] underline underline-offset-1 font-medium"
@@ -44,7 +53,11 @@ function Login() {
         >
           Đăng kí tài khoản
         </span>
-        <Button className="w-full !bg-primary !mt-5 !font-medium !text-[white]" size="large" htmlType="submit">
+        <Button
+          className="w-full !bg-primary !mt-5 !font-medium !text-[white]"
+          size="large"
+          htmlType="submit"
+        >
           Đăng Nhập
         </Button>
       </Form>
