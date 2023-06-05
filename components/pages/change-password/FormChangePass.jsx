@@ -1,9 +1,25 @@
+import { CreateContext } from "@/context/ContextProviderGlobal";
+import { changePasswordUser } from "@/service/user";
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useContext } from "react";
 
 function FormChangePass() {
+  const {errorNoti, successNoti} =useContext(CreateContext)
+  const [form]=Form.useForm()
+  const handleChangePass= async (e)=>{
+    const response = await changePasswordUser(localStorage.getItem('userId'),{
+      passWord: e.passwordOld,
+      newPassWord: e.password
+    })
+    if(response.data && response.data.status===200){
+      form.resetFields()
+      successNoti('request thành công')
+    }else{
+      errorNoti('đã có lỗi xảy ra')
+    }
+  }
   return (
-    <Form>
+    <Form onFinish={handleChangePass} form={form}>
       <Form.Item
         label="Nhập lại mật khẩu cũ"
         name="passwordOld"
@@ -52,7 +68,7 @@ function FormChangePass() {
       >
         <Input.Password size="large" placeholder="tên" />
       </Form.Item>
-      <Button className="mt-5 bg-primary w-full" type='primary' size='large'>Thay đổi mật khẩu</Button>
+      <Button className="mt-5 bg-primary w-full" type='primary' size='large' htmlType="submit">Thay đổi mật khẩu</Button>
     </Form>
   );
 }

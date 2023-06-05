@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 
 function Login() {
-  const {setLoading} = useContext(CreateContext);
+  const {setLoading, errorNoti} = useContext(CreateContext);
   const router = useRouter();
   const redirectRegister = (path) => {
     router.push("/auth/register");
@@ -23,10 +23,10 @@ function Login() {
         setLoading(true)
         router.push('/')
       }else{
-        console.log(response)
+        errorNoti(response.data.message)
       }
     } catch (error) {
-      console.log(error)
+      errorNoti(error)
     }
   }
   return (

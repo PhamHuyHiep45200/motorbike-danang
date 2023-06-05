@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "./Header";
-import { ConfigProvider, Spin } from "antd";
+import { ConfigProvider, Spin, message } from "antd";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { userGetMe } from "@/service/user";
 import { CreateContext } from "@/context/ContextProviderGlobal";
@@ -11,6 +11,7 @@ function MainLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [messageApi, contextHolder] = message.useMessage();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -42,11 +43,26 @@ function MainLayout({ children }) {
   const setUserData = (data) => {
     setUser(data);
   };
+  const successNoti = (message) => {
+    messageApi.open({
+      type: 'success',
+      content: message,
+    });
+  };
+
+  const errorNoti = (message) => {
+    messageApi.open({
+      type: 'error',
+      content: message,
+    });
+  };
   const data = useMemo(() => {
     return {
       user,
       setUserData,
       setLoading,
+      successNoti,
+      errorNoti
     };
   }, [user]);
   return (
@@ -59,6 +75,7 @@ function MainLayout({ children }) {
         }}
       >
         <Spin indicator={antIcon} spinning={loading}>
+        {contextHolder}
           <Header />
           <div style={{ marginTop: "calc(var(--header) + 20px)" }}>
             {children}

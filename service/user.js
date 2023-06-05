@@ -26,3 +26,10 @@ export async function updateUser(id,data) {
     data
   });
 }
+
+export async function changePasswordUser(id,data) {
+  return request(`/user/change-password/${id}`, {
+    method: "PUT",
+    data
+  });
+}

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 
 function Login() {
-  const {setLoading} = useContext(CreateContext);
+  const {setLoading, errorNoti, successNoti} = useContext(CreateContext);
   const router = useRouter();
   const redirectLogin = () => {
     setLoading(true)
@@ -17,14 +17,14 @@ function Login() {
     try {
       const response = await createUser(data)
       if(response.data && response.data.status===200){
-        alert('create account suscess')
+        successNoti('Tạo tài khoản thành công')
         setLoading(true)
         router.push('/auth/login')
       }else{
-        console.log('error')
+        errorNoti(response.data.message)
       }
     } catch (error) {
-      console.log(error)
+      errorNoti(error)
     }
   }
   return (

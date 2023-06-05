@@ -5,7 +5,7 @@ import React, { useContext, useEffect } from "react";
 
 function AccountEdit({ editForm }) {
   const [form] = Form.useForm();
-  const { user, setUserData } = useContext(CreateContext);
+  const { user, setUserData, errorNoti } = useContext(CreateContext);
   useEffect(() => {
     if (user) {
       form.setFieldsValue({
@@ -22,10 +22,10 @@ function AccountEdit({ editForm }) {
         setUserData(response.data.data);
         editForm(false);
       } else {
-        console.log(reponse);
+        errorNoti(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      errorNoti(error);
     }
   };
   return (
